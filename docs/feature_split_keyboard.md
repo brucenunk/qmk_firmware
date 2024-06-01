@@ -8,20 +8,24 @@ QMK Firmware has a generic implementation that is usable by any board, as well a
 
 For this, we will mostly be talking about the generic implementation used by the Let's Split and other keyboards. 
 
-!> ARM split supports most QMK subsystems when using the 'serial' and 'serial_usart' drivers. I2C slave is currently unsupported.
+::: warning
+ARM split supports most QMK subsystems when using the 'serial' and 'serial_usart' drivers. I2C slave is currently unsupported.
+:::
 
-!> Both sides must use the same MCU family, for eg two Pro Micro-compatible controllers or two Blackpills. Currently, mixing AVR and ARM is not possible as ARM vs AVR uses different method for serial communication, and are not compatible. Moreover Blackpill's uses 3.3v logic, and atmega32u4 uses 5v logic.
+::: warning
+Both sides must use the same MCU family, for eg two Pro Micro-compatible controllers or two Blackpills. Currently, mixing AVR and ARM is not possible as ARM vs AVR uses different method for serial communication, and are not compatible. Moreover Blackpill's uses 3.3v logic, and atmega32u4 uses 5v logic.
+:::
 
 ## Compatibility Overview
 
 | Transport                    | AVR                | ARM                |
 |------------------------------|--------------------|--------------------|
-| ['serial'](serial_driver.md) | :heavy_check_mark: | :white_check_mark: <sup>1</sup> |
+| ['serial'](serial_driver) | :heavy_check_mark: | :white_check_mark: <sup>1</sup> |
 | I2C                          | :heavy_check_mark: |                    |
 
 Notes:
 
-1. Both hardware and software limitations are detailed within the [driver documentation](serial_driver.md).
+1. Both hardware and software limitations are detailed within the [driver documentation](serial_driver).
 
 ## Hardware Configuration
 
@@ -45,13 +49,17 @@ Another option is to use phone cables (as in, old school RJ-11/RJ-14 cables). Ma
 
 However, USB cables, SATA cables, and even just 4 wires have been known to be used for communication between the controllers. 
 
-!> Using USB cables for communication between the controllers works just fine, but the connector could be mistaken for a normal USB connection and potentially short out the keyboard, depending on how it's wired.  For this reason, they are not recommended for connecting split keyboards.  
+::: warning
+Using USB cables for communication between the controllers works just fine, but the connector could be mistaken for a normal USB connection and potentially short out the keyboard, depending on how it's wired.  For this reason, they are not recommended for connecting split keyboards.  
+:::
 
 ### Serial Wiring
 
 The 3 wires of the TRS/TRRS cable need to connect GND, VCC, and D0/D1/D2/D3 (aka PD0/PD1/PD2/PD3) between the two Pro Micros. 
 
-?> Note that the pin used here is actually set by `SOFT_SERIAL_PIN` below.
+::: tip
+Note that the pin used here is actually set by `SOFT_SERIAL_PIN` below.
+:::
 
 <img alt="sk-pd0-connection-mono" src="https://user-images.githubusercontent.com/2170248/92296488-28e9ad80-ef70-11ea-98be-c40cb48a0319.JPG" width="48%"/>
 <img alt="sk-pd2-connection-mono" src="https://user-images.githubusercontent.com/2170248/92296490-2d15cb00-ef70-11ea-801f-5ace313013e6.JPG" width="48%"/>
@@ -78,6 +86,16 @@ If you're using a custom transport (communication method), then you will also ne
 ```make
 SPLIT_TRANSPORT = custom
 ```
+
+### Layout Macro
+
+Configuring your layout in a split keyboard works slightly differently to a non-split keyboard. Take for example the following layout. The top left numbers refer to the matrix row and column, and the bottom right are the order of the keys in the layout:
+
+![Physical layout](https://i.imgur.com/QeY6kMQ.png)
+
+Since the matrix scanning procedure operates on entire rows, it first populates the left half's rows, then the right half's. Thus, the matrix as QMK views it has double the rows instead of double the columns:
+
+![Matrix](https://i.imgur.com/4wjJzBU.png)
 
 ### Setting Handedness
 
@@ -109,12 +127,12 @@ You can configure the firmware to read key matrix pins on the controller to dete
 
 The first pin is the output pin and the second is the input pin.
 
-Some keyboards have unused intersections in the key matrix. This setting uses one of these unused intersections to determine the handness.
+Some keyboards have unused intersections in the key matrix. This setting uses one of these unused intersections to determine the handedness.
 
-Normally, when a diode is connected to an intersection, it is judged to be left. If you add the following definition, it will be judged to be right.
+Normally, when a diode is connected to an intersection, it is judged to be right. If you add the following definition, it will be judged to be left.
 
 ```c
-#define SPLIT_HAND_MATRIX_GRID_LOW_IS_RIGHT
+#define SPLIT_HAND_MATRIX_GRID_LOW_IS_LEFT
 ```
 
 Note that adding a diode at a previously unused intersection will effectively tell the firmware that there is a key held down at that point. You can instruct qmk to ignore that intersection by defining `MATRIX_MASKED` and then defining a `matrix_row_t matrix_mask[MATRIX_ROWS]` array in your keyboard config. Each bit of a single value (starting form the least-significant bit) is used to tell qmk whether or not to pay attention to key presses at that intersection.
@@ -132,50 +150,54 @@ To enable this method, add the following to your `config.h` file:
 #define EE_HANDS
 ```
 
-Next, you will have to flash the EEPROM files once for the correct hand to the controller on each halve. You can do this manually with the following bootloader targets while flashing the firmware:
+Next, you will have to flash the correct handedness option to the controller on each halve. You can do this manually with the following bootloader targets using `qmk flash -kb <keyboard> -km <keymap> -bl <bootloader>` command to flash:
 
-* AVR controllers with the Caterina bootloader (e.g. Pro Micro):
-  * `:avrdude-split-left`
-  * `:avrdude-split-right`
-* AVR controllers with the stock Amtel DFU or DFU compatible bootloader (e.g. Elite-C):
-  * `:dfu-split-left`
-  * `:dfu-split-right`
-* ARM controllers with a DFU compatible bootloader (e.g. Proton-C):
-  * `:dfu-util-split-left`
-  * `:dfu-util-split-right`
-* ARM controllers with a UF2 compatible bootloader:
-  * `:uf2-split-left`
-  * `:uf2-split-right`
+|Microcontroller Type|Bootloader Parameter|
+|--------------------|--------------------|
+|AVR controllers with Caterina bootloader<br>(e.g. Pro Micro)|`avrdude-split-left`<br>`avrdude-split-right`|
+|AVR controllers with the stock Amtel DFU or DFU compatible bootloader<br>(e.g. Elite-C)|`dfu-split-left`<br>`dfu-split-right`|
+|ARM controllers with a DFU compatible bootloader<br>(e.g. Proton-C)|`dfu-util-split-left`<br>`dfu-util-split-right`|
+|ARM controllers with a UF2 compatible bootloader<br>(e.g. RP2040)|`uf2-split-left`<br>`uf2-split-right`|
 
-Example:
-
+Example for `crkbd/rev1` keyboard with normal AVR Pro Micro MCUs, reset the left controller and run:
 ```
-make crkbd:default:avrdude-split-left
+qmk flash -kb crkbd/rev1 -km default -bl avrdude-split-left
+```
+Reset the right controller and run:
+```
+qmk flash -kb crkbd/rev1 -km default -bl avrdude-split-right
 ```
 
-?> ARM controllers using `dfu-util` will require an EEPROM reset after setting handedness. This can be done using the `EE_CLR` keycode or [Bootmagic Lite](feature_bootmagic.md). Controllers using emulated EEPROM will always require handedness parameter when flashing the firmware.
+::: tip
+Some controllers (e.g. Blackpill with DFU compatible bootloader) will need to be flashed with handedness bootloader parameter every time because it is not retained between flashes.
+:::
 
-?> [QMK Toolbox]() can also be used to flash EEPROM handedness files. Place the controller in bootloader mode and select menu option Tools -> EEPROM -> Set Left/Right Hand
+::: tip
+[QMK Toolbox]() can also be used to flash EEPROM handedness files. Place the controller in bootloader mode and select menu option Tools -> EEPROM -> Set Left/Right Hand
+:::
 
 This setting is not changed when re-initializing the EEPROM using the `EE_CLR` key, or using the `eeconfig_init()` function.  However, if you reset the EEPROM outside of the firmware's built in options (such as flashing a file that overwrites the `EEPROM`, like how the [QMK Toolbox]()'s "Reset EEPROM" button works), you'll need to re-flash the controller with the `EEPROM` files. 
 
 You can find the `EEPROM` files in the QMK firmware repo, [here](https://github.com/qmk/qmk_firmware/tree/master/quantum/split_common).
 
+
 #### Handedness by `#define`
 
-You can set the handedness at compile time.  This is done by adding the following to your `config.h` file:
+You can use this option when USB cable is always connected to just one side of the split keyboard.
 
+If the USB cable is always connected to the right side, add the following to your `config.h` file and flash both sides with this option:
 ```c
 #define MASTER_RIGHT
 ```
 
-or 
-
+If the USB cable is always connected to the left side, add the following to your `config.h` file and flash both sides with this option:
 ```c
 #define MASTER_LEFT
 ```
 
-If neither are defined, the handedness defaults to `MASTER_LEFT`.
+::: tip
+If neither options are defined, the handedness defaults to `MASTER_LEFT`.
+:::
 
 
 ### Communication Options
@@ -197,7 +219,7 @@ This sets the pin to be used for serial communication. If you're not using seria
 However, if you are using serial and I<sup>2</sup>C on the board, you will need to set this, and to something other than D0 and D1 (as these are used for I<sup>2</sup>C communication).
 
 ```c
-#define SELECT_SOFT_SERIAL_SPEED {#}`
+#define SELECT_SOFT_SERIAL_SPEED {#}
 ```
 
 If you're having issues with serial communication, you can change this value, as it controls the communication speed for serial.  The default is 1, and the possible values are:
@@ -258,7 +280,7 @@ This enables syncing of the Host LED status (caps lock, num lock, etc) between b
 #define SPLIT_MODS_ENABLE
 ```
 
-This enables transmitting modifier state (normal, weak and oneshot) to the non primary side of the split keyboard. The purpose of this feature is to support cosmetic use of modifer state (e.g. displaying status on an OLED screen).
+This enables transmitting modifier state (normal, weak, oneshot and oneshot locked) to the non primary side of the split keyboard. The purpose of this feature is to support cosmetic use of modifer state (e.g. displaying status on an OLED screen).
 
 ```c
 #define SPLIT_WPM_ENABLE
@@ -284,9 +306,23 @@ This enables transmitting the current ST7565 on/off status to the slave side of 
 
 This enables transmitting the pointing device status to the master side of the split keyboard. The purpose of this feature is to enable use pointing devices on the slave side. 
 
-!> There is additional required configuration for `SPLIT_POINTING_ENABLE` outlined in the [pointing device documentation](feature_pointing_device.md?id=split-keyboard-configuration).
+::: warning
+There is additional required configuration for `SPLIT_POINTING_ENABLE` outlined in the [pointing device documentation](feature_pointing_device#split-keyboard-configuration).
+:::
 
-### Custom data sync between sides :id=custom-data-sync
+```c
+#define SPLIT_HAPTIC_ENABLE
+```
+
+This enables the triggering of haptic feedback on the slave side of the split keyboard. This will send information to the slave side such as the mode, dwell, and whether buzz is enabled.
+
+```c
+#define SPLIT_ACTIVITY_ENABLE
+```
+
+This synchronizes the activity timestamps between sides of the split keyboard, allowing for activity timeouts to occur.
+
+### Custom data sync between sides {#custom-data-sync}
 
 QMK's split transport allows for arbitrary data transactions at both the keyboard and user levels. This is modelled on a remote procedure call, with the master invoking a function on the slave side, with the ability to send data from master to slave, process it slave side, and send data back from slave to master.
 
@@ -342,7 +378,9 @@ void housekeeping_task_user(void) {
 }
 ```
 
-!> It is recommended that any data sync between halves happens during the master side's _housekeeping task_. This ensures timely retries should failures occur.
+::: warning
+It is recommended that any data sync between halves happens during the master side's _housekeeping task_. This ensures timely retries should failures occur.
+:::
 
 If only one-way data transfer is needed, helper methods are provided:
 
@@ -361,7 +399,7 @@ By default, the inbound and outbound data is limited to a maximum of 32 bytes ea
 #define RPC_S2M_BUFFER_SIZE 48
 ```
 
-###  Hardware Configuration Options
+### Hardware Configuration Options
 
 There are some settings that you may need to configure, based on how the hardware is set up. 
 
@@ -397,7 +435,9 @@ This option enables synchronization of the RGB Light modes between the controlle
 
 This sets how many LEDs are directly connected to each controller.  The first number is the left side, and the second number is the right side.  
 
-?> This setting implies that `RGBLIGHT_SPLIT` is enabled, and will forcibly enable it, if it's not.
+::: tip
+This setting implies that `RGBLIGHT_SPLIT` is enabled, and will forcibly enable it, if it's not.
+:::
 
 
 ```c
@@ -410,7 +450,9 @@ Without this option, the master is the half that can detect voltage on the physi
 
 Enabled by default on ChibiOS/ARM.
 
-?> This setting will stop the ability to demo using battery packs.
+::: tip
+This setting will stop the ability to demo using battery packs.
+:::
 
 ```c
 #define SPLIT_USB_TIMEOUT 2000
