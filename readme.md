@@ -34,3 +34,21 @@ QMK is developed and maintained by Jack Humbert of OLKB with contributions from 
 ## Official Website
 
 [qmk.fm](https://qmk.fm) is the official website of QMK, where you can find links to this page, the documentation, and the keyboards supported by QMK.
+
+## Building and flashing
+
+For future me, so that I don't get slammed next time I don't make a change for two years.
+
+Building is simple, skip `qmk` and use `make keychron/q4/ansi/v2:brucenunk`.
+
+Flashing is a little more complex but still simple once you know. Switch into DFU mode by:
+
+- Unplugging the keyboard.
+- Press and hold escape.
+- Plug the keyboard back in.
+
+The keyboard is now in DFU mode and won't respond to key presses. It is now ready for flashing:
+
+`sudo make keychron/q4/ansi/v2:brucenunk:flash`
+
+You should now be running your latest keymap.
