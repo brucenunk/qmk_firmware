@@ -20,8 +20,7 @@
 
 enum layers {
     QWERTY,
-    MAYA,
-    HANSTER_NEU,
+    JL,
     _FN1,
     _FN2,
     _FN3
@@ -35,18 +34,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,              KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,            KC_RSFT,
         KC_LCTL,              KC_LOPT,  KC_LCMD,                            KC_SPC,                             KC_RCMD,  MO(_FN1), MO(_FN3), KC_RCTL),
 
-    [MAYA] = LAYOUT_ansi_61(
-        KC_ESC,               KC_1,     KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
-        KC_TAB,               KC_B,     KC_L,    KC_D,    KC_G,    KC_Q,    KC_J,    KC_F,    KC_O,    KC_U,    KC_COMM,  KC_LBRC,  KC_RBRC,  KC_BSLS,
-        MT(MOD_LCTL, KC_ESC), KC_N,     KC_R,    KC_T,    KC_S,    KC_V,    KC_K,    KC_H,    KC_A,    KC_E,    KC_I,     KC_SCLN,  KC_ENT,
-        KC_LSFT,              KC_X,     KC_M,    KC_C,    KC_W,    KC_Z,    KC_P,    KC_Y,    KC_QUOT, KC_SLSH, KC_DOT,             KC_RSFT,
-        KC_LCTL,              KC_LOPT,  KC_LCMD,                            KC_SPC,                             KC_RCMD,  MO(_FN1), MO(_FN3), KC_RCTL),
-
-    [HANSTER_NEU] = LAYOUT_ansi_61(
-        KC_ESC,               KC_1,     KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
-        KC_TAB,               KC_Q,     KC_C,    KC_L,    KC_D,    KC_B,    KC_Z,    KC_U,    KC_O,    KC_Y,    KC_J,     KC_LBRC,  KC_RBRC,  KC_BSLS,
-        MT(MOD_LCTL, KC_ESC), KC_R,     KC_S,    KC_N,    KC_T,    KC_P,    KC_QUOT, KC_A,    KC_E,    KC_I,    KC_H,     KC_SCLN,  KC_ENT,
-        KC_LSFT,              KC_W,     KC_F,    KC_M,    KC_G,    KC_V,    KC_SLSH, KC_DOT,  KC_COMM, KC_X,    KC_K,     KC_RSFT,
+    [JL] = LAYOUT_ansi_61(
+        KC_ESC,               KC_1,     KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_SLSH,  KC_BSPC,
+        KC_TAB,               KC_K,     KC_F,    KC_M,    KC_B,    KC_V,    KC_SCLN, KC_COMM, KC_DOT,  KC_QUOT, KC_Y,     KC_Z,     KC_Q,     KC_BSLS,
+        MT(MOD_LCTL, KC_ESC), KC_R,     KC_S,    KC_N,    KC_T,    KC_W,    KC_EQL,  KC_A,    KC_E,    KC_I,    KC_H,     KC_J,     KC_ENT,
+        KC_LSFT,              KC_C,     KC_L,    KC_D,    KC_G,    KC_X,    KC_P,    KC_U,    KC_O,    KC_LBRC, KC_RBRC,  KC_RSFT,
         KC_LCTL,              KC_LOPT,  KC_LCMD,                            KC_SPC,                             KC_RCMD,  MO(_FN1), MO(_FN3), KC_RCTL),
 
     [_FN1] = LAYOUT_ansi_61(
@@ -64,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,  _______,                            _______,                            _______,  _______,  _______,  _______),
 
     [_FN3] = LAYOUT_ansi_61(
-        KC_TILD, DF(QWERTY), DF(MAYA),  DF(HANSTER_NEU),   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   _______,
+        KC_TILD, DF(QWERTY), DF(JL),    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   _______,
         RGB_TOG, RGB_MOD,    RGB_VAI,   RGB_HUI,           RGB_SAI, RGB_SPI, _______, _______, _______, _______, _______,  _______,  _______,  _______,
         _______, RGB_RMOD,   RGB_VAD,   RGB_HUD,           RGB_SAD, RGB_SPD, _______, _______, _______, _______, _______,  _______,            _______,
         _______,             _______,   _______,           _______, _______, _______, _______, _______, _______, _______,  _______,            _______,
