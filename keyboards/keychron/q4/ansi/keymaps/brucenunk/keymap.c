@@ -18,9 +18,23 @@
 
 // clang-format off
 
+
+// Left-hand home row mods
+#define HOME_S LGUI_T(KC_S)
+#define HOME_N LALT_T(KC_N)
+#define HOME_T LSFT_T(KC_T)
+#define HOME_C LCTL_T(KC_C)
+
+// Right-hand home row mods
+#define HOME_H RCTL_T(KC_H)
+#define HOME_E RSFT_T(KC_E)
+#define HOME_A LALT_T(KC_A)
+#define HOME_I RGUI_T(KC_I)
+
+
 enum layers {
     QWERTY,
-    JL,
+    RECURVA,
     _FN1,
     _FN2,
     _FN3
@@ -34,11 +48,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,              KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,            KC_RSFT,
         KC_LCTL,              KC_LOPT,  KC_LCMD,                            KC_SPC,                             KC_RCMD,  MO(_FN1), MO(_FN3), KC_RCTL),
 
-    [JL] = LAYOUT_ansi_61(
-        KC_ESC,               KC_1,     KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_SLSH,  KC_BSPC,
-        KC_TAB,               KC_K,     KC_F,    KC_M,    KC_B,    KC_V,    KC_SCLN, KC_COMM, KC_DOT,  KC_QUOT, KC_Y,     KC_Z,     KC_Q,     KC_BSLS,
-        MT(MOD_LCTL, KC_ESC), KC_R,     KC_S,    KC_N,    KC_T,    KC_W,    KC_EQL,  KC_A,    KC_E,    KC_I,    KC_H,     KC_J,     KC_ENT,
-        KC_LSFT,              KC_C,     KC_L,    KC_D,    KC_G,    KC_X,    KC_P,    KC_U,    KC_O,    KC_LBRC, KC_RBRC,  KC_RSFT,
+    [RECURVA] = LAYOUT_ansi_61(
+        KC_ESC,               KC_1,     KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
+        KC_TAB,               KC_F,     KC_R,    KC_D,    KC_P,    KC_V,    KC_Q,    KC_J,    KC_U,    KC_O,    KC_Y,     KC_LBRC,  KC_RBRC,  KC_BSLS,
+        MT(MOD_LCTL, KC_ESC), HOME_S,   HOME_N, HOME_T,   HOME_C,  KC_B,    KC_DOT,  HOME_H,  HOME_E,  HOME_A,  HOME_I,   KC_SLSH,            KC_ENT,
+        KC_LSFT,              KC_X,     KC_K,    KC_G,    KC_W,    KC_Z,    KC_M,    KC_L,    KC_SCLN, KC_QUOT, KC_COMM,            KC_RSFT,
         KC_LCTL,              KC_LOPT,  KC_LCMD,                            KC_SPC,                             KC_RCMD,  MO(_FN1), MO(_FN3), KC_RCTL),
 
     [_FN1] = LAYOUT_ansi_61(
@@ -56,11 +70,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,  _______,                            _______,                            _______,  _______,  _______,  _______),
 
     [_FN3] = LAYOUT_ansi_61(
-        KC_TILD, DF(QWERTY), DF(JL),    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   _______,
-        RGB_TOG, RGB_MOD,    RGB_VAI,   RGB_HUI,           RGB_SAI, RGB_SPI, _______, _______, _______, _______, _______,  _______,  _______,  _______,
-        _______, RGB_RMOD,   RGB_VAD,   RGB_HUD,           RGB_SAD, RGB_SPD, _______, _______, _______, _______, _______,  _______,            _______,
-        _______,             _______,   _______,           _______, _______, _______, _______, _______, _______, _______,  _______,            _______,
-        _______, _______,    _______,                              _______,                            _______,  _______,  _______,  _______)
+        KC_TILD, DF(QWERTY), DF(RECURVA), KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   _______,
+        RGB_TOG, RGB_MOD,    RGB_VAI,     RGB_HUI,           RGB_SAI, RGB_SPI, _______, _______, _______, _______, _______,  _______,  _______,  _______,
+        _______, RGB_RMOD,   RGB_VAD,     RGB_HUD,           RGB_SAD, RGB_SPD, _______, _______, _______, _______, _______,  _______,            _______,
+        _______,             _______,     _______,           _______, _______, _______, _______, _______, _______, _______,  _______,            _______,
+        _______, _______,    _______,                                 _______,                            _______,  _______,  _______,  _______)
 };
 
 // clang-format on
