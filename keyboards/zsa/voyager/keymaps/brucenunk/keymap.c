@@ -6,13 +6,25 @@
 #include "keymap_us.h"
 #include QMK_KEYBOARD_H
 
+// Left-hand home row mods
+#define HRM_S LGUI_T(KC_S)
+#define HRM_C LALT_T(KC_C)
+#define HRM_N LCTL_T(KC_N)
+#define HRM_T LSFT_T(KC_T)
+
+// Right-hand home row mods
+#define HRM_A RSFT_T(KC_A)
+#define HRM_E RCTL_T(KC_E)
+#define HRM_I LALT_T(KC_I)
+#define HRM_H RGUI_T(KC_H)
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Alpha: Hands Down Vibranium (https://sites.google.com/alanreiser.com/handsdown/home/hands-down-neu#h.twknhghfz1x0)
     [0] = LAYOUT(
         KC_GRAVE,  KC_1, KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQUAL,
         KC_ESCAPE, KC_X, KC_W,    KC_M,    KC_G,    KC_J,                         KC_AT,   KC_DOT,  KC_SLASH,KC_DQUO, KC_QUOTE,KC_PIPE,
-        KC_TAB,    KC_S, KC_C,    KC_N,    KC_T,    KC_K,                         KC_COMMA,KC_A,    KC_E,    KC_I,    KC_H,    KC_DOLLAR,
+        KC_TAB,    HRM_S,HRM_C,   HRM_N,   HRM_T,   KC_K,                         KC_COMMA,HRM_A,   HRM_E,   HRM_I,   HRM_H,   KC_DOLLAR,
         KC_TILDE,  KC_F, KC_P,    KC_L,    KC_D,    KC_V,                         KC_MINUS,KC_U,    KC_O,    KC_Y,    KC_B,    KC_AMPERSAND,
                                                         KC_R,    KC_BSPC,                     KC_ENTER,LT(1,KC_SPC)
     ),
