@@ -4,8 +4,40 @@
 
 #include "keycodes.h"
 #include "keymap_us.h"
+#include "process_combo.h"
 #include "process_key_override.h"
 #include QMK_KEYBOARD_H
+
+// Digraphs.
+enum custom_keycodes {
+    COMBO_WH = SAFE_RANGE,
+    COMBO_GH,
+    COMBO_SH,
+    COMBO_CH,
+    COMBO_TH,
+    COMBO_PH,
+};
+
+const uint16_t PROGMEM combo_wh[]   = {KC_W, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_gh[]   = {KC_M, KC_G, COMBO_END};
+const uint16_t PROGMEM combo_sh[]   = {KC_S, KC_C, COMBO_END};
+const uint16_t PROGMEM combo_ch[]   = {KC_C, KC_N, COMBO_END};
+const uint16_t PROGMEM combo_th[]   = {KC_N, KC_T, COMBO_END};
+const uint16_t PROGMEM combo_ph[]   = {KC_P, KC_L, COMBO_END};
+combo_t                key_combos[] = {
+    // "wm" -> "wh".
+    COMBO(combo_wh, COMBO_WH),
+    // "mg" -> "gh".
+    COMBO(combo_gh, COMBO_GH),
+    // "sc" -> "sh".
+    COMBO(combo_sh, COMBO_SH),
+    // "cn" -> "ch".
+    COMBO(combo_ch, COMBO_CH),
+    // "nt" -> "th".
+    COMBO(combo_th, COMBO_TH),
+    // "pl" -> "ph".
+    COMBO(combo_ph, COMBO_PH),
+};
 
 // Home row mods.
 #define HRM_S LGUI_T(KC_S)
