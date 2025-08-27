@@ -4,19 +4,43 @@
 
 #include "keycodes.h"
 #include "keymap_us.h"
+#include "process_key_override.h"
 #include QMK_KEYBOARD_H
 
-// Left-hand home row mods
+// Home row mods.
 #define HRM_S LGUI_T(KC_S)
 #define HRM_C LALT_T(KC_C)
 #define HRM_N LCTL_T(KC_N)
 #define HRM_T LSFT_T(KC_T)
-
-// Right-hand home row mods
 #define HRM_A RSFT_T(KC_A)
 #define HRM_E RCTL_T(KC_E)
 #define HRM_I LALT_T(KC_I)
 #define HRM_H RGUI_T(KC_H)
+
+// Key overrides; used for shift overrides.
+const key_override_t shift_at_override           = ko_make_basic(MOD_MASK_SHIFT, KC_AT, KC_HASH);
+const key_override_t shift_dot_override          = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_COLON);
+const key_override_t shift_slash_override        = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, KC_ASTERISK);
+const key_override_t shift_double_quote_override = ko_make_basic(MOD_MASK_SHIFT, KC_DQUO, KC_QUESTION);
+const key_override_t shift_single_quote_override = ko_make_basic(MOD_MASK_SHIFT, KC_QUOTE, KC_EXCLAIM);
+const key_override_t shift_comma_override        = ko_make_basic(MOD_MASK_SHIFT, KC_COMMA, KC_SEMICOLON);
+const key_override_t shift_minus_override        = ko_make_basic(MOD_MASK_SHIFT, KC_MINUS, KC_PLUS);
+
+const key_override_t *key_overrides[] = {
+    // "@" -> "#"
+    &shift_at_override,
+    // "." -> ":"
+    &shift_dot_override,
+    // "/" -> "*"
+    &shift_slash_override,
+    // '"' -> "?
+    &shift_double_quote_override,
+    // "'" -> "!"
+    &shift_single_quote_override,
+    // "," -> ";"
+    &shift_comma_override,
+    // "-" -> "+"
+    &shift_minus_override};
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
