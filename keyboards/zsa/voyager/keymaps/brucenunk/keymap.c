@@ -2,42 +2,12 @@
 // Copyright 2023 Christopher Courtney, aka Drashna Jael're  (@drashna) <drashna@live.com>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
+#include "action.h"
 #include "keycodes.h"
 #include "keymap_us.h"
 #include "process_combo.h"
 #include "process_key_override.h"
 #include QMK_KEYBOARD_H
-
-// Digraphs.
-enum custom_keycodes {
-    COMBO_WH = SAFE_RANGE,
-    COMBO_GH,
-    COMBO_SH,
-    COMBO_CH,
-    COMBO_TH,
-    COMBO_PH,
-};
-
-const uint16_t PROGMEM combo_wh[]   = {KC_W, KC_M, COMBO_END};
-const uint16_t PROGMEM combo_gh[]   = {KC_M, KC_G, COMBO_END};
-const uint16_t PROGMEM combo_sh[]   = {KC_S, KC_C, COMBO_END};
-const uint16_t PROGMEM combo_ch[]   = {KC_C, KC_N, COMBO_END};
-const uint16_t PROGMEM combo_th[]   = {KC_N, KC_T, COMBO_END};
-const uint16_t PROGMEM combo_ph[]   = {KC_P, KC_L, COMBO_END};
-combo_t                key_combos[] = {
-    // "wm" -> "wh".
-    COMBO(combo_wh, COMBO_WH),
-    // "mg" -> "gh".
-    COMBO(combo_gh, COMBO_GH),
-    // "sc" -> "sh".
-    COMBO(combo_sh, COMBO_SH),
-    // "cn" -> "ch".
-    COMBO(combo_ch, COMBO_CH),
-    // "nt" -> "th".
-    COMBO(combo_th, COMBO_TH),
-    // "pl" -> "ph".
-    COMBO(combo_ph, COMBO_PH),
-};
 
 // Home row mods.
 #define HRM_S LGUI_T(KC_S)
@@ -48,6 +18,38 @@ combo_t                key_combos[] = {
 #define HRM_E RCTL_T(KC_E)
 #define HRM_I LALT_T(KC_I)
 #define HRM_H RGUI_T(KC_H)
+
+// Digraphs.
+enum combo_events {
+    COMBO_CH,
+    COMBO_GH,
+    COMBO_PH,
+    COMBO_SH,
+    COMBO_TH,
+    COMBO_WH,
+};
+
+const uint16_t PROGMEM combo_ch[] = {HRM_C, HRM_N, COMBO_END};
+const uint16_t PROGMEM combo_gh[] = {KC_M, KC_G, COMBO_END};
+const uint16_t PROGMEM combo_ph[] = {KC_P, KC_L, COMBO_END};
+const uint16_t PROGMEM combo_sh[] = {HRM_S, HRM_C, COMBO_END};
+const uint16_t PROGMEM combo_th[] = {HRM_N, HRM_T, COMBO_END};
+const uint16_t PROGMEM combo_wh[] = {KC_W, KC_M, COMBO_END};
+
+combo_t key_combos[] = {
+    // "c+n" -> "ch".
+    [COMBO_CH] = COMBO_ACTION(combo_ch),
+    // "m+g" -> "gh".
+    [COMBO_GH] = COMBO_ACTION(combo_gh),
+    // "p+l" -> "ph".
+    [COMBO_PH] = COMBO_ACTION(combo_ph),
+    // "s+c" -> "sh".
+    [COMBO_SH] = COMBO_ACTION(combo_sh),
+    // "n+t" -> "th".
+    [COMBO_TH] = COMBO_ACTION(combo_th),
+    // "w+m" -> "wh".
+    [COMBO_WH] = COMBO_ACTION(combo_wh),
+};
 
 // Key overrides; used for shift overrides.
 const key_override_t shift_at_hash_override               = ko_make_basic(MOD_MASK_SHIFT, KC_AT, KC_HASH);
@@ -94,3 +96,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 };
 // clang-format on
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    // Ignore release events.
+    if (!pressed) {
+        return;
+    }
+
+    // "h" digraphs.
+    switch (combo_index) {
+        case COMBO_CH:
+            tap_code(KC_C);
+            break;
+        case COMBO_GH:
+            tap_code(KC_G);
+            break;
+        case COMBO_PH:
+            tap_code(KC_P);
+            break;
+        case COMBO_SH:
+            tap_code(KC_S);
+            break;
+        case COMBO_TH:
+            tap_code(KC_T);
+            break;
+        case COMBO_WH:
+            tap_code(KC_W);
+            break;
+    }
+
+    tap_code(KC_H);
+};
