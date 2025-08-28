@@ -50,29 +50,29 @@ combo_t                key_combos[] = {
 #define HRM_H RGUI_T(KC_H)
 
 // Key overrides; used for shift overrides.
-const key_override_t shift_at_override           = ko_make_basic(MOD_MASK_SHIFT, KC_AT, KC_HASH);
-const key_override_t shift_dot_override          = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_COLON);
-const key_override_t shift_slash_override        = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, KC_ASTERISK);
-const key_override_t shift_double_quote_override = ko_make_basic(MOD_MASK_SHIFT, KC_DQUO, KC_QUESTION);
-const key_override_t shift_single_quote_override = ko_make_basic(MOD_MASK_SHIFT, KC_QUOTE, KC_EXCLAIM);
-const key_override_t shift_comma_override        = ko_make_basic(MOD_MASK_SHIFT, KC_COMMA, KC_SEMICOLON);
-const key_override_t shift_minus_override        = ko_make_basic(MOD_MASK_SHIFT, KC_MINUS, KC_PLUS);
+const key_override_t shift_at_hash_override               = ko_make_basic(MOD_MASK_SHIFT, KC_AT, KC_HASH);
+const key_override_t shift_dot_colon_override             = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_COLON);
+const key_override_t shift_slash_asterisk_override        = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, KC_ASTERISK);
+const key_override_t shift_double_quote_question_override = ko_make_basic(MOD_MASK_SHIFT, KC_DQUO, KC_QUESTION);
+const key_override_t shift_single_quote_exclaim_override  = ko_make_basic(MOD_MASK_SHIFT, KC_QUOTE, KC_EXCLAIM);
+const key_override_t shift_comma_semicolon_override       = ko_make_basic(MOD_MASK_SHIFT, KC_COMMA, KC_SEMICOLON);
+const key_override_t shift_minus_plus_override            = ko_make_basic(MOD_MASK_SHIFT, KC_MINUS, KC_PLUS);
 
 const key_override_t *key_overrides[] = {
     // "@" -> "#"
-    &shift_at_override,
+    &shift_at_hash_override,
     // "." -> ":"
-    &shift_dot_override,
+    &shift_dot_colon_override,
     // "/" -> "*"
-    &shift_slash_override,
+    &shift_slash_asterisk_override,
     // '"' -> "?
-    &shift_double_quote_override,
+    &shift_double_quote_question_override,
     // "'" -> "!"
-    &shift_single_quote_override,
+    &shift_single_quote_exclaim_override,
     // "," -> ";"
-    &shift_comma_override,
+    &shift_comma_semicolon_override,
     // "-" -> "+"
-    &shift_minus_override};
+    &shift_minus_plus_override};
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
