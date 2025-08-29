@@ -9,6 +9,16 @@
 #include "process_key_override.h"
 #include QMK_KEYBOARD_H
 
+//
+//    Base (alpha) Layer  Hands Down Vibranium-vf (HRMs /+ thumb mods)
+//      ╭─────────────────────╮                 ╭─────────────────────╮
+//      │  X   W   M   G   J  │                 │  @#  .:  /*  "?  '! │
+//      │  S   C   N   T   K  |                 |  ,;   A   E   I   H │
+//      │  F   P   L   D   V  │                 │  -+   U   O   Y   B │
+//      ╰───────────╮ bsp  R  │                 │ spc  ret ╭──────────╯
+//                  ╰─────────╯                 ╰──────────╯
+//
+
 // Home row mods.
 #define HRM_S LGUI_T(KC_S)
 #define HRM_C LALT_T(KC_C)
