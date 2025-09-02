@@ -34,17 +34,23 @@ enum combo_events {
     COMBO_CH,
     COMBO_GH,
     COMBO_PH,
+    COMBO_Q,
     COMBO_SH,
     COMBO_TH,
     COMBO_WH,
+    COMBO_Z,
 };
 
+// H-digraphs.
 const uint16_t PROGMEM combo_ch[] = {HRM_C, HRM_N, COMBO_END};
 const uint16_t PROGMEM combo_gh[] = {KC_M, KC_G, COMBO_END};
 const uint16_t PROGMEM combo_ph[] = {KC_P, KC_L, COMBO_END};
 const uint16_t PROGMEM combo_sh[] = {HRM_S, HRM_C, COMBO_END};
 const uint16_t PROGMEM combo_th[] = {HRM_N, HRM_T, COMBO_END};
 const uint16_t PROGMEM combo_wh[] = {KC_W, KC_M, COMBO_END};
+// Evicted letters - these are too infrequently used to live on the base alpha layout.
+const uint16_t PROGMEM combo_q[] = {HRM_C, HRM_T, COMBO_END};
+const uint16_t PROGMEM combo_z[] = {KC_W, KC_G, COMBO_END};
 
 combo_t key_combos[] = {
     // "c+n" -> "ch".
@@ -59,6 +65,10 @@ combo_t key_combos[] = {
     [COMBO_TH] = COMBO_ACTION(combo_th),
     // "w+m" -> "wh".
     [COMBO_WH] = COMBO_ACTION(combo_wh),
+    // "w+g" -> "q".
+    [COMBO_Q] = COMBO_ACTION(combo_q),
+    // "c+t" -> "z".
+    [COMBO_Z] = COMBO_ACTION(combo_z),
 };
 
 // Key overrides; used for shift overrides.
@@ -113,27 +123,42 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         return;
     }
 
-    // "h" digraphs.
+    bool h_digraph = false;
+
     switch (combo_index) {
+        // H-digraphs.
         case COMBO_CH:
+            h_digraph = true;
             tap_code(KC_C);
             break;
         case COMBO_GH:
+            h_digraph = true;
             tap_code(KC_G);
             break;
         case COMBO_PH:
+            h_digraph = true;
             tap_code(KC_P);
             break;
         case COMBO_SH:
+            h_digraph = true;
             tap_code(KC_S);
             break;
         case COMBO_TH:
+            h_digraph = true;
             tap_code(KC_T);
             break;
         case COMBO_WH:
+            h_digraph = true;
             tap_code(KC_W);
+            break;
+        // Evicted letters.
+        case COMBO_Q:
+            tap_code(KC_Q);
+            break;
+        case COMBO_Z:
+            tap_code(KC_Z);
             break;
     }
 
-    tap_code(KC_H);
+    if (h_digraph) tap_code(KC_H);
 };
