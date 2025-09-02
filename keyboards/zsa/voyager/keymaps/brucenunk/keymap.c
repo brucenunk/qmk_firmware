@@ -5,6 +5,7 @@
 #include "action.h"
 #include "keycodes.h"
 #include "keymap_us.h"
+#include "modifiers.h"
 #include "process_combo.h"
 #include "process_key_override.h"
 #include QMK_KEYBOARD_H
@@ -158,5 +159,9 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
             break;
     }
 
-    if (h_digraph) tap_code(KC_H);
+    if (h_digraph) {
+        // Unregister `shift` so that we can hold shift and press a h-digraph and it works as expected; ie: `shift+th` should output `Th`.
+        unregister_mods(MOD_MASK_SHIFT);
+        tap_code(KC_H);
+    }
 };
