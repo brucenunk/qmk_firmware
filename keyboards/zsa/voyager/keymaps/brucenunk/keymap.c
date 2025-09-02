@@ -44,7 +44,7 @@ enum combo_events {
 // H-digraphs.
 const uint16_t PROGMEM combo_ch[] = {HRM_C, HRM_N, COMBO_END};
 const uint16_t PROGMEM combo_gh[] = {KC_M, KC_G, COMBO_END};
-const uint16_t PROGMEM combo_ph[] = {KC_P, KC_L, COMBO_END};
+const uint16_t PROGMEM combo_ph[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_sh[] = {HRM_S, HRM_C, COMBO_END};
 const uint16_t PROGMEM combo_th[] = {HRM_N, HRM_T, COMBO_END};
 const uint16_t PROGMEM combo_wh[] = {KC_W, KC_M, COMBO_END};
@@ -57,7 +57,7 @@ combo_t key_combos[] = {
     [COMBO_CH] = COMBO_ACTION(combo_ch),
     // "m+g" -> "gh".
     [COMBO_GH] = COMBO_ACTION(combo_gh),
-    // "p+l" -> "ph".
+    // "f+p" -> "ph".
     [COMBO_PH] = COMBO_ACTION(combo_ph),
     // "s+c" -> "sh".
     [COMBO_SH] = COMBO_ACTION(combo_sh),
