@@ -118,45 +118,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
-    // Ignore release events.
-    if (!pressed) {
-        return;
-    }
-
     bool h_digraph = false;
+    bool released  = !pressed;
 
     switch (combo_index) {
         // H-digraphs.
         case COMBO_CH:
-            h_digraph = true;
-            tap_code(KC_C);
+            if (released) {
+                h_digraph = true;
+                tap_code(KC_C);
+            }
             break;
         case COMBO_GH:
-            h_digraph = true;
-            tap_code(KC_G);
+            if (pressed) {
+                h_digraph = true;
+                tap_code(KC_G);
+            }
             break;
         case COMBO_PH:
-            h_digraph = true;
-            tap_code(KC_P);
+            if (pressed) {
+                h_digraph = true;
+                tap_code(KC_P);
+            }
             break;
         case COMBO_SH:
-            h_digraph = true;
-            tap_code(KC_S);
+            if (released) {
+                h_digraph = true;
+                tap_code(KC_S);
+            }
             break;
         case COMBO_TH:
-            h_digraph = true;
-            tap_code(KC_T);
+            if (released) {
+                h_digraph = true;
+                tap_code(KC_T);
+            }
             break;
         case COMBO_WH:
-            h_digraph = true;
-            tap_code(KC_W);
+            if (pressed) {
+                h_digraph = true;
+                tap_code(KC_W);
+            }
             break;
         // Evicted letters.
         case COMBO_Q:
-            tap_code(KC_Q);
+            if (pressed) tap_code(KC_Q);
             break;
         case COMBO_Z:
-            tap_code(KC_Z);
+            if (pressed) tap_code(KC_Z);
             break;
     }
 
