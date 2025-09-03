@@ -27,7 +27,7 @@
 #define HRM_T LSFT_T(KC_T)
 #define HRM_A RSFT_T(KC_A)
 #define HRM_E RCTL_T(KC_E)
-#define HRM_I LALT_T(KC_I)
+#define HRM_I RALT_T(KC_I)
 #define HRM_H RGUI_T(KC_H)
 
 // Digraphs.
