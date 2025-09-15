@@ -1,1 +1,2 @@
 #define COMBO_TERM 40
+#define TAPPING_TERM 160
