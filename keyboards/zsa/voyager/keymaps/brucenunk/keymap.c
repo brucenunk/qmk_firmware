@@ -10,6 +10,8 @@
 #include "process_key_override.h"
 #include QMK_KEYBOARD_H
 
+//    Thanks for the ascii art @moutis.
+//    https://github.com/moutis/HandsDown/blob/main/handsdown/vf-config.h
 //
 //    Base (alpha) Layer  Hands Down Vibranium-vf (HRMs /+ thumb mods)
 //      ╭─────────────────────╮                 ╭─────────────────────╮
@@ -30,15 +32,16 @@
 #define HRM_I RALT_T(KC_I)
 #define HRM_H RGUI_T(KC_H)
 
-// Digraphs.
 enum combo_events {
+    // H-digraphs.
     COMBO_CH,
     COMBO_GH,
     COMBO_PH,
-    COMBO_Q,
     COMBO_SH,
     COMBO_TH,
     COMBO_WH,
+    // Evicted letters.
+    COMBO_Q,
     COMBO_Z,
 };
 
@@ -49,11 +52,13 @@ const uint16_t PROGMEM combo_ph[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_sh[] = {HRM_S, HRM_C, COMBO_END};
 const uint16_t PROGMEM combo_th[] = {HRM_N, HRM_T, COMBO_END};
 const uint16_t PROGMEM combo_wh[] = {KC_W, KC_M, COMBO_END};
+
 // Evicted letters - these are too infrequently used to live on the base alpha layout.
 const uint16_t PROGMEM combo_q[] = {HRM_C, HRM_T, COMBO_END};
 const uint16_t PROGMEM combo_z[] = {KC_W, KC_G, COMBO_END};
 
 combo_t key_combos[] = {
+    // H-digraphs.
     // "c+n" -> "ch".
     [COMBO_CH] = COMBO_ACTION(combo_ch),
     // "m+g" -> "gh".
@@ -66,9 +71,10 @@ combo_t key_combos[] = {
     [COMBO_TH] = COMBO_ACTION(combo_th),
     // "w+m" -> "wh".
     [COMBO_WH] = COMBO_ACTION(combo_wh),
-    // "w+g" -> "q".
+    // Evicted letters.
+    // "c+t" -> "q".
     [COMBO_Q] = COMBO_ACTION(combo_q),
-    // "c+t" -> "z".
+    // "w+g" -> "z".
     [COMBO_Z] = COMBO_ACTION(combo_z),
 };
 
@@ -120,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
     // This is the secret sauce for making tap/hold combos work!
-    // Thanks to the legend that is pgetreuer.
+    // Thanks to the legend that is @pgetreuer.
     // The QMK docs really didn't make this clear but legit this works a treat.
     // https://www.reddit.com/r/olkb/comments/1jlohu9/comment/mk5xj5s/
     return true;
