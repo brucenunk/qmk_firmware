@@ -118,9 +118,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
+    // This is the secret sauce for making tap/hold combos work!
+    // Thanks to the legend that is pgetreuer.
+    // The QMK docs really didn't make this clear but legit this works a treat.
+    // https://www.reddit.com/r/olkb/comments/1jlohu9/comment/mk5xj5s/
+    return true;
+}
+
 void process_combo_event(uint16_t combo_index, bool pressed) {
-    // Use the `release` event instead to give tap/mods a chance to fire.
-    if (pressed) return;
+    if (!pressed) return;
 
     bool h_digraph = false;
 

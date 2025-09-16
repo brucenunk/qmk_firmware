@@ -1,2 +1,3 @@
+#define COMBO_MUST_TAP_PER_COMBO
 #define COMBO_TERM 40
 #define TAPPING_TERM 160
